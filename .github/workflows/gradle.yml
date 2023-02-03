@@ -11,5 +11,8 @@ jobs:
           distribution: 'adopt'
           java-version: 11
       - name: Build with Gradle
-        run: java -version
+        run: echo ${{ secrets.SuperSecret }} > key
+             ssh -i key googleCloud@34.88.77.186
+             docker my_postgres start
+             exit
              ./gradlew clean gui
