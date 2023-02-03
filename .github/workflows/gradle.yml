@@ -11,4 +11,5 @@ jobs:
           distribution: 'adopt'
           java-version: 11
       - name: Build with Gradle
-        run: ./gradlew clean gui
+        run: java -v
+             ./gradlew clean gui
