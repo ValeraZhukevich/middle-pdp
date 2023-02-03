@@ -1,10 +1,13 @@
 package gui;
 
+import config.SelenoidConfig;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.codeborne.selenide.Selenide.*;
 
+@ExtendWith(SelenoidConfig.class)
 public class AmazonTest {
 
     @Tag("gui")
