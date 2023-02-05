@@ -14,6 +14,8 @@ jobs:
         run: echo '${{ secrets.PUBLIC_KEY }}' > key
              ssh -i key valera@34.88.77.186
              ${{ secrets.PASSWORD_TO_CLOUD }}
-             docker my_postgres start
+             docker start my_postgres
+             docker ps
+             ip address show
              exit
              ./gradlew clean gui
