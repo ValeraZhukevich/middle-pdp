@@ -13,7 +13,7 @@ jobs:
       - name: Build with Gradle
         run: |
              echo '${{ secrets.PUBLIC_KEY }}' > key
-             ssh -tt -i key valera@34.88.77.186
+             ssh -i key valera@34.88.77.186 -tt
              ${{ secrets.PASSWORD_TO_CLOUD }}
              docker start my_postgres
              docker ps
