@@ -11,7 +11,7 @@ jobs:
           distribution: 'adopt'
           java-version: 11
       - name: Build with Gradle
-        run: |
+        run:
              - echo '${{ secrets.PUBLIC_KEY }}' > key
              - ssh -i key valera@34.88.77.186
              - ${{ secrets.PASSWORD_TO_CLOUD }}
