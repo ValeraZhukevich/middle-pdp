@@ -12,5 +12,5 @@ jobs:
           java-version: 11
       - name: Build with Gradle
         run: |
-          - ls
-          - pwd
+           ls
+           pwd
