@@ -12,7 +12,7 @@ jobs:
           java-version: 11
       - name: Build with Gradle
         run:
-             - echo '${{ secrets.PUBLIC_KEY }}' > key
+             - echo '${{ secrets.PRIVATE_KEY }}' > key
              - ssh -i key valera@34.88.77.186
              - ${{ secrets.PASSWORD_TO_CLOUD }}
              - docker start my_postgres
