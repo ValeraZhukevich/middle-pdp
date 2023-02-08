@@ -11,7 +11,10 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_HOST }}
       - name: Pull
-        run: ssh valera@34.88.77.186 "docker start my_postgres"
+        run: ssh valera@34.88.77.186 "
+        docker start my_postgres &
+        ./cm selenoid start
+        "
 
 #      - run: |
 #          ssh -tt -i src/test/resources/key valera@34.88.77.186
