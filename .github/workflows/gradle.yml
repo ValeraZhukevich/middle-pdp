@@ -11,7 +11,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_HOST }}
       - name: Pull
-        run: ssh valera@34.88.77.186 "docker my_postgres start & docker ps"
+        run: ssh valera@34.88.77.186 "docker my_postgres start"
 
 #      - run: |
 #          ssh -tt -i src/test/resources/key valera@34.88.77.186
