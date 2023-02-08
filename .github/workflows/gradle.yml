@@ -10,9 +10,10 @@ jobs:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '11'
       - run: |
-          echo '${{ secrets.PRIVATE_KEY }}' > key 
-          ssh -i key valera@34.88.77.186 
-          docker my_postgres start
-          docker ps
-          exit 
+          ls
+#          echo '${{ secrets.PRIVATE_KEY }}' > key
+#          ssh -i key valera@34.88.77.186
+#          docker my_postgres start
+#          docker ps
+#          exit
       
