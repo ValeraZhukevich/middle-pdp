@@ -10,7 +10,6 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 11
-        shell: |
+        run: |
           echo hello
-          ls
-          pwd
+      
