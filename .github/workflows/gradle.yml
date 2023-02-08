@@ -11,6 +11,8 @@ jobs:
           distribution: 'adopt'
           java-version: 11
       - name: Build with Gradle
-        run: |
-           ls
-           pwd
+        with:
+          cmd: |
+            echo hello
+            ls
+            pwd
