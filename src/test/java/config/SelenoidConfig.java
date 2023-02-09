@@ -11,7 +11,7 @@ public class SelenoidConfig implements BeforeEachCallback {
     @Override
     public void beforeEach(ExtensionContext context) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("browserName", "chrome");
+        capabilities.setCapability("browserName", System.getProperty("browser"));
         capabilities.setCapability("selenoid:options", Map.<String, Object>of(
                 "enableVNC", true,
                 "enableVideo", true

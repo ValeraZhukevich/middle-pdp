@@ -2,7 +2,10 @@ name: CI
 on: [ push ]
 
 jobs:
-  build:
+  tests:
+    strategy:
+      matrix:
+        browser: [chrome, firefox]
     runs-on: ubuntu-latest
     steps:
       - name: Start containers
@@ -28,7 +31,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Execute gradle task
-        run: ./gradlew clean gui
+        run: ./gradlew clean gui -Dbrowser=${{ matrix.browser }}
 
       - name: Stop containers
         run: ssh valera@34.88.77.186 "/home/paramone_val/cm selenoid stop &
