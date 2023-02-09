@@ -1,11 +1,8 @@
 name: CI
-on: [ push ]
+on: [ push, workflow_dispatch ]
 
 jobs:
   tests:
-    strategy:
-      matrix:
-        browser: [chrome, firefox]
     runs-on: ubuntu-latest
     steps:
       - name: Start containers
@@ -30,11 +27,15 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
+        continue-on-error: true
+        strategy:
+          matrix:
+            browser: [ chrome, firefox ]
       - name: Execute gradle task
         run: ./gradlew clean gui -Dbrowser=${{ matrix.browser }}
 
       - name: Stop containers
         run: ssh valera@34.88.77.186 "/home/paramone_val/cm selenoid stop &
-              docker stop my_postgres &
-              exit"
+          docker stop my_postgres &
+          exit"
 
