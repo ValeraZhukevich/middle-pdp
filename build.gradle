@@ -24,5 +24,4 @@ task gui(type: Test) {
     useJUnitPlatform {
         includeTags "gui"
     }
-//    maxParallelForks(2)
 }
