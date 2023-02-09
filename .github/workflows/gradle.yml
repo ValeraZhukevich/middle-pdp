@@ -37,7 +37,7 @@ jobs:
           known_hosts: ${{ secrets.SSH_HOST }}
 
       - name: ssh connection and stop docker containers
-         run: ssh valera@34.88.77.186 "/home/paramone_val/cm selenoid stop &
+        run: ssh valera@34.88.77.186 "/home/paramone_val/cm selenoid stop &
               docker stop my_postgres &
               exit"
 
