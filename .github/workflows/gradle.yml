@@ -33,7 +33,7 @@ jobs:
       - name: Execute gradle task
         run: ./gradlew clean gui -Dbrowser=${{ matrix.browser }}
 
-  Stop containers:
+  stop_containers_on_VM:
     runs-on: ubuntu-latest
     needs: tests
     steps:
