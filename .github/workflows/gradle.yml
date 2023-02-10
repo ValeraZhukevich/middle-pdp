@@ -29,7 +29,7 @@ jobs:
           distribution: temurin
           java-version: 1
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v
+        uses: gradle/gradle-build-action@v2
       - name: Execute gradle task
         run: ./gradlew clean gui -Dbrowser=${{ matrix.browser }}
 
