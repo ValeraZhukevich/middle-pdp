@@ -1,5 +1,10 @@
 plugins {
     id 'java'
+    id 'io.qameta.allure' version '2.11.2'
+}
+
+allure {
+    version = '2.20.1'
 }
 
 group 'org.example'
@@ -13,6 +18,10 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     implementation 'com.codeborne:selenide:6.11.2'
+    implementation 'io.qameta.allure:allure-selenide:2.21.0'
+    testImplementation 'io.qameta.allure:allure-junit5:2.21.0'
+
+
 
 }
 
