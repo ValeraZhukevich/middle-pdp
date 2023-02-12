@@ -26,6 +26,8 @@ jobs:
       - name: Execute gradle task
         run: |
          - echo "${{ secrets.PRIVATE_KEY }}" >> key
+         - pwd
+         - ls
          - scp -i key src/test/resources valera@${{ secrets.HOST_IP }}:~/results
 #      - name: Setup java
 #        uses: actions/setup-java@v3
