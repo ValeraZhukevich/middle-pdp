@@ -2,9 +2,9 @@ name: CI
 on: [ push, workflow_dispatch ]
 
 jobs:
-  run_containers_on_VM:
-    runs-on: ubuntu-latest
-    steps:
+#  run_containers_on_VM:
+#    runs-on: ubuntu-latest
+#    steps:
 #      - uses: shimataro/ssh-key-action@v2
 #        with:
 #          key: ${{ secrets.PRIVATE_KEY }}
