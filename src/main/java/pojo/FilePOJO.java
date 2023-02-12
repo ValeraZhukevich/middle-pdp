@@ -9,9 +9,7 @@ import lombok.Data;
 @Data
 public class FilePOJO {
 
-    @JsonProperty("file_name")
-    String fileName;
+    String file_name;
 
-    @JsonProperty("content_base64")
-    String contentBase64;
+    String content_base64;
 }
