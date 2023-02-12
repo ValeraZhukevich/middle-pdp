@@ -10,7 +10,7 @@ jobs:
 #          key: ${{ secrets.PRIVATE_KEY }}
 #          known_hosts: ${{ secrets.SSH_HOST }}
 #      - name: ssh connection and start docker containers
-#        run: ssh valera@{{ secrets.HOST_IP } "./cm selenoid start &
+#        run: ssh valera@${{ secrets.HOST_IP } "./cm selenoid start &
 #          docker start pdp-postgres &
 #          exit"
   tests:
@@ -25,8 +25,8 @@ jobs:
         uses: actions/checkout@v3
       - name: Execute gradle task
         run: |
-          echo "{{ secrets.PRIVATE_KEY }}" >> key
-          scp -i key src/test/resources valera@{{ secrets.HOST_IP }}:~/results
+          echo "${{ secrets.PRIVATE_KEY }}" >> key
+          scp -i key src/test/resources valera@${{ secrets.HOST_IP }}:~/results
 #      - name: Setup java
 #        uses: actions/setup-java@v3
 #        with:
@@ -46,6 +46,6 @@ jobs:
 #          key: ${{ secrets.PRIVATE_KEY }}
 #          known_hosts: ${{ secrets.SSH_HOST }}
 #      - name: ssh connection and stop docker containers
-#        run: ssh valera@{{ HOST_IP }} "./cm selenoid stop &
+#        run: ssh valera@${{ secrets.HOST_IP }} "./cm selenoid stop &
 #          docker stop pdp-postgres &
 #          exit"
