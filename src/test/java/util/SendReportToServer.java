@@ -31,7 +31,7 @@ public class SendReportToServer {
                 .map(file -> {
                     try {
                         return FilePOJO.builder()
-                                .file_name("name" + count.getAndIncrement())
+                                .file_name("file" + count.getAndIncrement())
                                 .content_base64(encodeFileToBase64Binary("build/allure-results/" + file)).build();
 
                     } catch (IOException e) {
@@ -53,31 +53,21 @@ public class SendReportToServer {
                 .then().statusCode(200);
 
 
+
+        given()
+                .param("project_id", "pdp-middle")
+                .header("Content-Type", "application/json")
+                .when()
+                .get("http://34.65.55.99:5050/generate-report")
+                .then().statusCode(200);
+
+
     }
-
-//        FilePOJO[] filePOJOS = new FilePOJO[files.length];
-//        FilePOJO filePOJO = new FilePOJO();
-//
-//        Arrays.stream(files).forEach(file -> {
-//            FilePOJO filePOJO = new FilePOJO();
-//            filePOJO.setFileName("file" + count);
-//            filePOJO.setContentBase64(file.);
-//
-//            filePOJOS[count] =
-//        });
-
-
-
-//
-
-
-//    }
 
     private static String encodeFileToBase64Binary(String fileName) throws IOException {
         File file = new File(fileName);
         byte[] encoded = Base64.encodeBase64(FileUtils.readFileToByteArray(file));
         return new String(encoded, StandardCharsets.US_ASCII);
     }
-
 
 }
