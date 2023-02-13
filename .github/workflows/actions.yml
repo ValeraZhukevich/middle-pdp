@@ -47,7 +47,7 @@ jobs:
     - name: Execute gui task
       run: ./gradlew clean ${{ inputs.test_job }} -Dbrowser=chrome
     - name: Generate allure report
-      if: always()
+      if: always() && ${{ inputs.allure }}
       run: echo "Generate allure"
 
   stop_containers_on_VM:
