@@ -1,6 +1,6 @@
 name: CI
 on:
-  push:
+#  push:
   workflow_dispatch:
     inputs:
       test_job:
@@ -42,7 +42,7 @@ jobs:
         java-version: 11
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
-      if: ${{ inputs.test_job == "gui" || inputs.test_job == "all" }}
+      if: ${{ inputs.test_job == 'gui' || inputs.test_job == 'all' }}
     - name: Execute gui task
       run: ./gradlew clean gui -Dbrowser=${{ matrix.browser }}
 
