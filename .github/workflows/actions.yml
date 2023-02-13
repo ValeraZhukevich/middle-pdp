@@ -56,9 +56,9 @@ jobs:
         path: build
 
   artifact:
-    if: ${{ github.event.inputs.allure == 'false' }}
     needs: tests
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.allure == 'false' }}
     steps:
       - name: Get build artifacts
         uses: actions/download-artifact@v3
