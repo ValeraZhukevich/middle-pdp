@@ -47,10 +47,8 @@ jobs:
     - name: Execute ${{ github.event.inputs.test_job }} task
       run: ./gradlew clean ${{ github.event.inputs.test_job }} -Dbrowser=chrome
     - name: Generate allure report
-      if: always()
-      run: |
-        - echo "Generate allure"
-        - echo ${{ github.event.inputs.allure }}
+      if: ${{ github.event.inputs.allure }}
+      run: echo ${{ github.event.inputs.allure }}
 
   stop_containers_on_VM:
     runs-on: ubuntu-latest
