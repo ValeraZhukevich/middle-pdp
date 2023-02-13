@@ -41,16 +41,14 @@ jobs:
         java-version: 11
     - name: Checkout project sources
       uses: actions/checkout@v3
-    - name: Gradle
-      uses: gradle/gradle-build-action@v2
+    - uses: gradle/gradle-build-action@v2
 
     - name: Execute ${{ github.event.inputs.test_job }} task
       run: ./gradlew clean ${{ github.event.inputs.test_job }} -Dbrowser=chrome
     - name: Generate allure report
-    - if: ${{ github.event.inputs.allure == 'true' }}
+    - if: ${{ (github.event.inputs.test_job == 'true')}}
       run: echo "WTF"
-    - name: Not generate allure
-    - if: ${{ github.event.inputs.allure != 'true' }}
+    - if: ${{ (github.event.inputs.test_job != 'true')}}
       run: echo "WTF is going on"
 
   stop_containers_on_VM:
