@@ -39,6 +39,8 @@ task gui(type: Test) {
     maxParallelForks(2)
 }
 
+
+
 task allure(type: Test) {
     useJUnitPlatform {
         includeTags "allure"

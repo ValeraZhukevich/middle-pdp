@@ -44,9 +44,8 @@ jobs:
       uses: actions/checkout@v3
     - uses: gradle/gradle-build-action@v2
 
-      if: ${{ inputs.test_job == 'gui'}}
     - name: Execute gui task
-      run: ./gradlew clean gui -Dbrowser=chrome
+      run: ./gradlew clean ${{ inputs.test_job }} -Dbrowser=chrome
 
   stop_containers_on_VM:
     runs-on: ubuntu-latest
