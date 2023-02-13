@@ -46,7 +46,7 @@ jobs:
     - name: Execute ${{ github.event.inputs.test_job }} task
       run: ./gradlew clean ${{ github.event.inputs.test_job }} -Dbrowser=chrome
     - name: Generate allure report
-      if: always() && ${{ (github.event.inputs.allure == 'true')}}
+      if:   ${{ (success() || failure()) && (github.event.inputs.allure == 'true')}}
       run: echo "WTF"
 
 
