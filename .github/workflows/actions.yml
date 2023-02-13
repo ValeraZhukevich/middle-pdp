@@ -41,7 +41,8 @@ jobs:
         java-version: 11
     - name: Checkout project sources
       uses: actions/checkout@v3
-    - uses: gradle/gradle-build-action@v2
+    - name: Gradle
+      uses: gradle/gradle-build-action@v2
 #    - name: Execute ${{ github.event.inputs.test_job }} task
 #      run: ./gradlew clean ${{ github.event.inputs.test_job }} -Dbrowser=chrome
     - name: Generate allure report
