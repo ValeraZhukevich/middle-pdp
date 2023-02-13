@@ -1,9 +1,9 @@
 name: CI
 on:
-  push:
+#  push:
   workflow_dispatch:
     inputs:
-      name:
+      test_job:
         type: choice
         description: "Jobs to execute"
         options:
@@ -13,7 +13,10 @@ on:
           - chrome
           - firefox
           - all
-
+      allure:
+        description: "Generate allure reports"
+        required: true
+        type: boolean
 jobs:
   run_containers_on_VM:
     runs-on: ubuntu-latest
