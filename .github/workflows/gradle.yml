@@ -1,5 +1,6 @@
 name: CI
-on: [ push,
+on:
+  push:
   workflow_dispatch:
     inputs:
       name:
@@ -12,7 +13,6 @@ on: [ push,
           - chrome
           - firefox
           - all
-]
 
 jobs:
   run_containers_on_VM:
