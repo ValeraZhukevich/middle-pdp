@@ -1,6 +1,5 @@
 package pojo;
 
-import io.qameta.allure.internal.shadowed.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,6 +8,5 @@ import lombok.Data;
 public class AllureResultsPOJO {
 
     FilePOJO[] results;
-
 
 }

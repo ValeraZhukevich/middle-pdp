@@ -10,6 +10,6 @@ import lombok.Data;
 public class FilePOJO {
 
     String file_name;
-
     String content_base64;
+
 }

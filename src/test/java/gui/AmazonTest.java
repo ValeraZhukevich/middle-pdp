@@ -1,6 +1,8 @@
 package gui;
 
 import config.SelenoidConfig;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,12 +12,14 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 @ExtendWith(SelenoidConfig.class)
+@Feature("21 Vek")
 public class AmazonTest {
 
     @Tag("gui")
     @Test
+    @Story("Search by product name")
     void searchByProductName() {
-        open("https://oz.by");
+        open("https://21vek.by");
         $(".styles_primaryButton__30pEq").click();
         sleep(6000);
         $("#catalogSearch").val("Star wars lego").pressEnter();

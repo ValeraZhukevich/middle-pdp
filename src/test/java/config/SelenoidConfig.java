@@ -17,14 +17,14 @@ public class SelenoidConfig implements BeforeEachCallback, BeforeAllCallback {
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("browserName", System.getProperty("browser"));
-        capabilities.setCapability("selenoid:options", Map.<String, Object>of(
-                "enableVNC", true,
-                "enableVideo", true
-        ));
-        Configuration.browserCapabilities = capabilities;
-        Configuration.remote = "http://34.88.77.186:4444/wd/hub";
+//        DesiredCapabilities capabilities = new DesiredCapabilities();
+//        capabilities.setCapability("browserName", System.getProperty("browser"));
+//        capabilities.setCapability("selenoid:options", Map.<String, Object>of(
+//                "enableVNC", true,
+//                "enableVideo", true
+//        ));
+//        Configuration.browserCapabilities = capabilities;
+//        Configuration.remote = "http://34.88.77.186:4444/wd/hub";
     }
 
     @Override
