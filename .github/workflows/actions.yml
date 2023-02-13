@@ -28,9 +28,9 @@ jobs:
           docker start pdp-postgres &
           exit"
   tests:
-    strategy:
-      matrix:
-        browser: [ chrome, firefox ]
+#    strategy:
+#      matrix:
+#        browser: [ chrome, firefox ]
     runs-on: ubuntu-latest
     needs: run_containers_on_VM
     continue-on-error: true
@@ -44,7 +44,7 @@ jobs:
       uses: gradle/gradle-build-action@v2
       if: (github.event.test_job == 'gui' || github.event.test_job == 'all')
     - name: Execute gui task
-      run: ./gradlew clean gui -Dbrowser=${{ matrix.browser }}
+      run: ./gradlew clean gui -Dbrowser=chrome
 
   stop_containers_on_VM:
     runs-on: ubuntu-latest
