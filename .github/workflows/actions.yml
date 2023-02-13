@@ -40,6 +40,8 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: 11
+    - name: Checkout project sources
+      uses: actions/checkout@v3
     - uses: gradle/gradle-build-action@v2
       if: (github.event.test_job == 'gui' || github.event.test_job == 'all')
     - name: Execute gui task
