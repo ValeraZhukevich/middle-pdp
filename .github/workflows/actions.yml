@@ -16,7 +16,6 @@ on:
         required: true
         type: boolean
 jobs:
-  continue-on-error: true
   run_containers_on_VM:
     runs-on: ubuntu-latest
     steps:
@@ -42,7 +41,8 @@ jobs:
         java-version: 11
     - name: Checkout project sources
       uses: actions/checkout@v3
-    - uses: gradle/gradle-build-action@v2
+    - name: Gradle
+      uses: gradle/gradle-build-action@v2
 
     - name: Execute ${{ github.event.inputs.test_job }} task
       run: ./gradlew clean ${{ github.event.inputs.test_job }} -Dbrowser=chrome
@@ -54,6 +54,7 @@ jobs:
       run: echo "WTF is going on"
 
   stop_containers_on_VM:
+    continue-on-error: true
     runs-on: ubuntu-latest
     needs: tests
     steps:
