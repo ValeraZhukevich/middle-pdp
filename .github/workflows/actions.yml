@@ -1,6 +1,6 @@
 name: CI
 on:
-  push:
+#  push:
   workflow_dispatch:
     inputs:
       test_job:
