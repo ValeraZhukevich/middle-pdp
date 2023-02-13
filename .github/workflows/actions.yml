@@ -46,11 +46,13 @@ jobs:
     - name: Execute ${{ github.event.inputs.test_job }} task
       run: ./gradlew clean ${{ github.event.inputs.test_job }} -Dbrowser=chrome
     - name: Generate allure report
-      continue-on-error: true
-      if: always() && ${{ (github.event.inputs.test_job == 'true')}}
+    - if: ${{ github.event.inputs.allure == 'true' }}
       run: echo "WTF"
+    - if: ${{ github.event.inputs.allure != 'true' }}
+      run: echo "WTF is going on"
 
   stop_containers_on_VM:
+    continue-on-error: true
     runs-on: ubuntu-latest
     needs: tests
     steps:
