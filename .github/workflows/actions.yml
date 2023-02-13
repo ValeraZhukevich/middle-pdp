@@ -44,8 +44,9 @@ jobs:
       uses: actions/checkout@v3
     - uses: gradle/gradle-build-action@v2
       if: (github.event.test_job == 'gui' || github.event.test_job == 'all')
-    - name: Execute gui task
-      run: ./gradlew clean gui -Dbrowser=chrome
+      steps:
+      - name: Execute gui task
+        run: ./gradlew clean gui -Dbrowser=chrome
 
   stop_containers_on_VM:
     runs-on: ubuntu-latest
@@ -54,7 +55,7 @@ jobs:
       - uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.PRIVATE_KEY }}
-          known_hosts: ${{ secrets.SSH_HOST }}
+          known_hosts: ${{ inputs.test_job == 'gui'}}
       - name: ssh connection and stop docker containers
         run: ssh valera@${{ secrets.HOST_IP }} "./cm selenoid stop &
           docker stop pdp-postgres &

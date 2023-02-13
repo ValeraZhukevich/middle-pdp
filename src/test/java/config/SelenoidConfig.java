@@ -1,15 +1,19 @@
 package config;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import utils.PropertiesReader;
 
 import java.util.Map;
+
+import static utils.PropertiesReader.getProperty;
 
 public class SelenoidConfig implements BeforeEachCallback, BeforeAllCallback {
 
@@ -23,7 +27,7 @@ public class SelenoidConfig implements BeforeEachCallback, BeforeAllCallback {
                 "enableVideo", true
         ));
         Configuration.browserCapabilities = capabilities;
-        Configuration.remote = PropertiesReader.getProperty("host") + "/wd/hub";
+        Configuration.remote = getProperty("host") + getProperty("selenoidPort") ;
     }
 
     @Override
