@@ -38,17 +38,9 @@ jobs:
     - name: Setup java
       uses: actions/setup-java@v3
       with:
-        distribution: temurin
+        distribution: 'adopt'
         java-version: 11
-    - name: Change wrapper permissions
-      run: chmod +x ./gradlew
-
-    - name: Init gradle wrapper
-      run: gradle wrapper
-
-    - name: Change wrapper permissions
-      run: chmod +x ./gradlew
-
+    - uses: gradle/gradle-build-action@v2
       if: (github.event.test_job == 'gui' || github.event.test_job == 'all')
     - name: Execute gui task
       run: ./gradlew clean gui -Dbrowser=chrome
