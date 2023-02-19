@@ -24,10 +24,10 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_HOST }}
       - name: ssh connection and start docker containers
-        run:
-          ./cm selenoid start
-          docker start pdp-postgres
-          exit
+        run: ssh valera@${{ secrets.HOST_IP }}
+          "./cm selenoid start &
+          docker start pdp-postgres &
+          exit"
   tests:
     #    strategy:
     #      matrix:
