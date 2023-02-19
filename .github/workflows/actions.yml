@@ -1,6 +1,6 @@
 name: CI
 on:
-#  push:
+  #  push:
   workflow_dispatch:
     inputs:
       test_job:
@@ -24,46 +24,47 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_HOST }}
       - name: ssh connection and start docker containers
-        run: ssh valera@${{ secrets.HOST_IP }} "./cm selenoid start &
-          docker start pdp-postgres &
-          exit"
+        run:
+          ./cm selenoid start
+          docker start pdp-postgres
+          exit
   tests:
-#    strategy:
-#      matrix:
-#        browser: [ chrome, firefox ]
+    #    strategy:
+    #      matrix:
+    #        browser: [ chrome, firefox ]
     runs-on: ubuntu-latest
     needs: run_containers_on_VM
     steps:
-    - name: Setup java
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'adopt'
-        java-version: 11
-    - name: Checkout project sources
-      uses: actions/checkout@v3
-    - name: Gradle
-      uses: gradle/gradle-build-action@v2
-    - name: Execute ${{ github.event.inputs.test_job }} task
-      run: ./gradlew clean ${{ github.event.inputs.test_job }} -Dbrowser=chrome
-    - name: Generate allure report
-      if:   ${{ (success() || failure()) && (github.event.inputs.allure == 'true') }}
-      run: echo "WTF"
-    - name: Upload artifacts
-      if: ${{ (success() || failure()) && (github.event.inputs.allure == 'false') }}
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-files
-        path: build
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 11
+      - name: Checkout project sources
+        uses: actions/checkout@v3
+      - name: Gradle
+        uses: gradle/gradle-build-action@v2
+      - name: Execute ${{ github.event.inputs.test_job }} task
+        run: ./gradlew clean ${{ github.event.inputs.test_job }} -Dbrowser=chrome
+      - name: Generate allure report
+        if: ${{ (success() || failure()) && (github.event.inputs.allure == 'true') }}
+        run: echo "WTF"
+      - name: Upload artifacts
+        if: ${{ (success() || failure()) && (github.event.inputs.allure == 'false') }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-results
+          path: build/allure-results
 
   artifact:
     needs: tests
     runs-on: ubuntu-latest
     if: ${{ (success() || failure()) && (github.event.inputs.allure == 'false') }}
     steps:
-      - name: Get build artifacts
+      - name: Get allure results artifacts
         uses: actions/download-artifact@v3
         with:
-          name: build-files
+          name: allure-results
 
   stop_containers_on_VM:
     runs-on: ubuntu-latest
@@ -78,3 +79,28 @@ jobs:
         run: ssh valera@${{ secrets.HOST_IP }} "./cm selenoid stop &
           docker stop pdp-postgres &
           exit"
+
+#  generate_allure_results:
+#    runs-on: ubuntu-latest
+#    needs: stop_containers_on_VM
+#    if: ${{ always() && (github.event.inputs.allure == 'true') }}
+#    steps:
+#      - uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.PRIVATE_KEY }}
+#          known_hosts: ${{ secrets.SSH_HOST }}
+#      - name: ssh connection and stop docker containers
+#        run:
+#          ssh valera@${{ secrets.HOST_IP }} "ID=$( curl \
+#              -H "Accept: application/vnd.github+json" \
+#              -H "Authorization: Bearer {{ secrets.TOKEN }}" \
+#              -H "X-GitHub-Api-Version: 2022-11-28" \
+#              https://api.github.com/repos/{{ secrets.OWNER }}/{{ secrets.PROJECT }}/actions/artifacts | jq -r '.artifacts[0].id' )
+#              curl \
+#                   -H "Accept: application/vnd.github+json" \
+#                   -H "Authorization: Bearer {{ secrets.TOKEN }}" \
+#                   -H "X-GitHub-Api-Version: 2022-11-28" \
+#                   -L -o allure-results.zip \
+#                   "https://api.github.com/repos/{{ secrets.OWNER }}/{{ secrets.PROJECT }}/actions/artifacts/$ID/zip" "
+
+

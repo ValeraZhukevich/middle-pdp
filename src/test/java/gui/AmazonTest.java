@@ -19,7 +19,7 @@ public class AmazonTest {
     @Test
     @Story("Search by product name")
     void searchByProductName() {
-        open("https://21vek.by");
+        open("https://oz.by");
         $(".styles_primaryButton__30pEq").click();
         sleep(6000);
         $("#catalogSearch").val("Star wars lego").pressEnter();
