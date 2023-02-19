@@ -88,11 +88,10 @@ jobs:
         - name: LS
           run: echo ls
         - name: artifacts id
-          run: id=156888
-#          run: id=$( curl -H "Accept:application/vnd.github+json" \
-#                -H "Authorization:Bearer ${{ secrets.TOKEN }}" \
-#                -H "X-GitHub-Api-Version:2022-11-28"  \
-#                https://api.github.com/repos/ValeraZhukevich/middle-pdp/actions/artifacts | jq -r '.artifacts[0].id')
+          run: id=$( curl --location --request GET 'https://api.github.com/repos/ValeraZhukevich/middle-pdp/actions/artifacts' \
+            --header 'Accept:application/vnd.github+json' \
+            --header 'Authorization:Bearer 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' \
+            --header 'X-GitHub-Api-Version:2022-11-28' | jq -r '.artifacts[0].id')
         - name: id
           run: echo $id
         - name: echo
