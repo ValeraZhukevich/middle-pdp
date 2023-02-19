@@ -80,22 +80,24 @@ jobs:
 #          docker stop pdp-postgres &
 #          exit"
 
-  generate_allure_results:
-      runs-on: ubuntu-latest
-      steps:
-        - name: PWD
-          run: echo pwd
-        - name: LS
-          run: echo ls
-        - name: artifacts id
-          run: id=$( curl --location --request GET 'https://api.github.com/repos/ValeraZhukevich/middle-pdp/actions/artifacts' \
-            --header 'Accept:application/vnd.github+json' \
-            --header 'Authorization:Bearer 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' \
-            --header 'X-GitHub-Api-Version:2022-11-28' | jq -r '.artifacts[0].id')
-        - name: id
-          run: echo $id
-        - name: echo
-          run: echo "Hello"
+   generate_allure_results:
+    runs-on: ubuntu-latest
+#    needs: artifact
+    if: ${{ always() && (github.event.inputs.allure == 'true') }}
+    steps:
+      - uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_HOST }}
+      - name: Get artifact id
+        run: ssh valera@${{ secrets.HOST_IP }} "curl \
+                                -H "Accept:application/vnd.github+json" \
+                                -H "Authorization:Bearer ${{ secrets.TOKEN }}" \
+                                -H "X-GitHub-Api-Version:2022-11-28" \
+                                -L -o allure-results.zip https://api.github.com/repos/${{ secrets.OWNER }}/${{ secrets.PROJECT }}/actions/artifacts/(curl -H "Accept:application/vnd.github+json" \
+                    -H "Authorization:Bearer  ${{ secrets.TOKEN }}" \
+                  -H "X-GitHub-Api-Version:2022-11-28" \
+                  "https://api.github.com/repos/ValeraZhukevich/pdp-middle/actions/artifacts" | jq -r '.artifacts[0].id')/zip"
 
 #  generate_allure_results:
 #    runs-on: ubuntu-latest
