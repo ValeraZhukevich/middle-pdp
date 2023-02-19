@@ -50,11 +50,11 @@ jobs:
         if: ${{ (success() || failure()) && (github.event.inputs.allure == 'true') }}
         run: echo "WTF"
       - name: Upload artifacts
-        if: ${{ (success() || failure()) && (github.event.inputs.allure == 'false') }}
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: allure-results
-          path: build
+          path: build/allure-results
 
   artifact:
     needs: tests
