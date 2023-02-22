@@ -102,4 +102,4 @@ jobs:
       - name: Unzip into results folder
         run: ssh valera@${{ secrets.HOST_IP }} "unzip allure-results.zip -d allure-results"
       - name: Generate Allure report
-        run: curl http://34.65.55.99:5050/generate-report?project_id=${{ secrets.PROJECT }}
+        run: curl http://34.65.55.99:5050/generate-report
