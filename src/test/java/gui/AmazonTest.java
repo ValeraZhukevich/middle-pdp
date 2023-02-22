@@ -1,6 +1,6 @@
 package gui;
 
-import config.SelenoidConfig;
+import config.GuiConfig;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.Tag;
@@ -11,7 +11,7 @@ import org.openqa.selenium.By;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
-@ExtendWith(SelenoidConfig.class)
+@ExtendWith(GuiConfig.class)
 @Feature("21 Vek")
 public class AmazonTest {
 
