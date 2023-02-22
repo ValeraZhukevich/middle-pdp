@@ -97,7 +97,9 @@ jobs:
           known_hosts: ${{ secrets.SSH_HOST }}
       - name: Download artifact
         run: ssh valera@${{ secrets.HOST_IP }} "curl -H \"Accept:application/vnd.github+json\" -H \"Authorization:Bearer ${{ secrets.TOKEN }}\" -H \"X-GitHub-Api-Version:2022-11-28\" -L -o allure-results.zip https://api.github.com/repos/${{ secrets.OWNER }}/${{ secrets.PROJECT }}/actions/artifacts/${{ env.id }}/zip"
-      - name: Unzip archive
-        run: ssh valera@${{ secrets.HOST_IP }} "rm -rf results/* & unzip allure-results.zip -d results"
+      - name: Clear results folder
+        run: ssh valera@${{ secrets.HOST_IP }} "rm -rf results/*"
+      - name: Unzip into results folder
+        run: ssh valera@${{ secrets.HOST_IP }} "unzip allure-results.zip -d results"
       - name: Generate Allure report
         run: curl http://34.65.55.99:5050/generate-report?project_id=${{ secrets.PROJECT }}
