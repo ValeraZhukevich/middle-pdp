@@ -1,5 +1,8 @@
 package utils;
 
+import io.qameta.allure.Step;
+import org.openqa.selenium.support.ui.Select;
+
 import java.sql.*;
 
 import static utils.PropertiesReader.getProperty;
@@ -38,6 +41,7 @@ public class JdbcConnection {
         }
     }
 
+    @Step("Saving '{user}' user")
     public static Long saveUser(User user) {
         try {
             PreparedStatement prepareStatement = connection
@@ -58,7 +62,8 @@ public class JdbcConnection {
         return null;
     }
 
-    public static void updateUser(Long id, User user) {
+    @Step("Update user '{user}'")
+    public static void updateUser(User user) {
         try {
             PreparedStatement preparedStatement =
                     connection.prepareStatement("UPDATE users SET name=?, surname=?, email=?, phone=? WHERE id=?");
@@ -67,13 +72,14 @@ public class JdbcConnection {
             preparedStatement.setString(2, user.getSurname());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getPhone());
-            preparedStatement.setLong(5, id);
+            preparedStatement.setLong(5, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    @Step("Delete user by '{id}' id")
     public static void deleteUser(Long id) {
         try {
             PreparedStatement preparedStatement =
@@ -86,6 +92,7 @@ public class JdbcConnection {
         }
     }
 
+    @Step("Getting number of all users")
     public static int getUsersCount() {
         Statement statement;
         try {
@@ -96,7 +103,6 @@ public class JdbcConnection {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 }
