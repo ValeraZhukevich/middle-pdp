@@ -26,13 +26,17 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.5.1'
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+    implementation 'org.postgresql:postgresql:42.5.4'
+    implementation 'com.github.javafaker:javafaker:1.0.2'
+
+
 }
 
 test {
     useJUnitPlatform()
 }
 
-task gui(type: Test) {
+tasks.register('gui', Test) {
     useJUnitPlatform {
         includeTags "gui"
     }
@@ -40,8 +44,7 @@ task gui(type: Test) {
 }
 
 
-
-task allure(type: Test) {
+tasks.register('allure', Test) {
     useJUnitPlatform {
         includeTags "allure"
     }

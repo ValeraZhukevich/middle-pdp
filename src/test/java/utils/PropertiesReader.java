@@ -8,12 +8,12 @@ public class PropertiesReader {
     private static final Properties properties = new Properties();
 
     private static void loadProperties() {
-        properties.putAll(loadPropertiesFromFile("application.properties"));
+        properties.putAll(loadPropertiesFromFile());
     }
 
-    private static Properties loadPropertiesFromFile(String propertiesFile) {
+    private static Properties loadPropertiesFromFile() {
         try (InputStream inputStream =
-                     Thread.currentThread().getContextClassLoader().getResourceAsStream(propertiesFile)) {
+                     Thread.currentThread().getContextClassLoader().getResourceAsStream("application.properties")) {
             Properties properties = new Properties();
             properties.load(inputStream);
             return properties;
@@ -27,6 +27,10 @@ public class PropertiesReader {
             loadProperties();
         }
         return properties.getProperty(key);
+    }
+
+    public static void setProperty(String key, String value) {
+        properties.setProperty(key, value);
     }
 
 }
