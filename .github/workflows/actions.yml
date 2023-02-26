@@ -1,11 +1,13 @@
 name: CI
 on:
-  #  push:
+  schedule:
+    - cron: '0 6 * * 0-5'
   workflow_dispatch:
     inputs:
       test_job:
         type: choice
         description: "Jobs to execute"
+        default: 'all'
         options:
           - gui
           - jdbc
