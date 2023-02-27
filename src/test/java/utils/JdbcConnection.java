@@ -105,4 +105,14 @@ public class JdbcConnection {
         }
     }
 
+    public static void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 package jdbc;
 
 import com.github.javafaker.Faker;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,5 +32,10 @@ public class DatabaseTest {
     @AfterEach
     void tearDown() {
         JdbcConnection.deleteUser(Long.valueOf(getProperty("userId")));
+    }
+
+    @AfterAll
+    public void closeConnections() {
+        JdbcConnection.closeConnection();
     }
 }
