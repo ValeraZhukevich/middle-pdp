@@ -13,7 +13,7 @@ on:
           - jdbc
           - newman
           - all
-          - \U0001f952
+          - &#129362
       allure:
         description: "Generate allure reports"
         required: true
