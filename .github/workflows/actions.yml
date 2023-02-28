@@ -62,16 +62,6 @@ jobs:
         with:
           collection: zags.postman_collection.json
 
-  newman:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - uses: matt-ball/newman-action@master
-        with:
-          apiKey: ${{ secrets.postmanApiKey }}
-          collection: postman_collection.json
-          environment: 5922408-228c7edd-fc15-4f68-9665-a35d7df6945b
-
   artifact:
     needs: tests
     runs-on: ubuntu-latest
