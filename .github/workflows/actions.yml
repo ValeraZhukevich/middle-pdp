@@ -110,6 +110,11 @@ jobs:
       - name: Clear results folder
         run: ssh valera@${{ secrets.HOST_IP }} "rm -rf allure-results/**"
       - name: Unzip into results folder
-        run: ssh valera@${{ secrets.HOST_IP }} "unzip -f artifacts.zip -d allure-results"
+        run: ssh valera@${{ secrets.HOST_IP }} "unzip artifacts.zip -d allure-results"
+
+      - name: Store newman htm report file
+        if: ${{ github.event.inputs.test_job }} == 'newman' || ${{ github.event.inputs.test_job }} == 'all'
+        run: |
+          mv -i allure-results/newman_report.html.html ~/newman
 #      - name: Generate Allure report
 #        run: curl http://${{ secrets.HOST_IP }}:5050/generate-report
