@@ -55,7 +55,9 @@ jobs:
         with:
           name: allure-results
           path: build/allure-results
+
       - name: Run Postman API Tests via Newman
+        if: ${{ always() && (github.event.inputs.test_job == 'all' || github.event.inputs.test_job == 'newman') }}
         id: run-newman
         uses: anthonyvscode/newman-action@v1
         with:
