@@ -11,7 +11,7 @@ on:
         options:
           - gui
           - jdbc
-          - postman
+          - newman
           - all
       allure:
         description: "Generate allure reports"
@@ -55,6 +55,22 @@ jobs:
         with:
           name: allure-results
           path: build/allure-results
+      - name: Run postman collections tests via Newman
+        if: ${{ always() && (github.event.inputs.test_job == 'all' || github.event.inputs.test_job == 'newman') }}
+      - uses: actions/checkout@master
+      - uses: matt-ball/newman-action@master
+        with:
+          collection: zags.postman_collection.json
+
+  newman:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: matt-ball/newman-action@master
+        with:
+          apiKey: ${{ secrets.postmanApiKey }}
+          collection: postman_collection.json
+          environment: 5922408-228c7edd-fc15-4f68-9665-a35d7df6945b
 
   artifact:
     needs: tests
