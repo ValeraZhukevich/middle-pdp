@@ -45,22 +45,25 @@ jobs:
           java-version: 11
       - name: Checkout project sources
         uses: actions/checkout@v3
-      - name: Gradle
-        uses: gradle/gradle-build-action@v2
-      - name: Execute ${{ github.event.inputs.test_job }} task
-        run: ./gradlew clean ${{ github.event.inputs.test_job }} -Dbrowser=chrome
-      - name: Upload artifacts
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: allure-results
-          path: build/allure-results
+#      - name: Gradle
+#        uses: gradle/gradle-build-action@v2
+#      - name: Execute ${{ github.event.inputs.test_job }} task
+#        run: ./gradlew clean ${{ github.event.inputs.test_job }} -Dbrowser=chrome
+#      - name: Upload artifacts
+#        if: always()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: allure-results
+#          path: build/allure-results
+      - name: Install Newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+      - name: Run postman collection
+        run:  |
+          newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export newman_artifact/report.html
       - name: Run postman collections tests via Newman
-        if: ${{ always() && (github.event.inputs.test_job == 'all' || github.event.inputs.test_job == 'newman') }}
-      - uses: actions/checkout@master
-      - uses: matt-ball/newman-action@master
-        with:
-          collection: zags.postman_collection.json
+
 
   artifact:
     needs: tests
@@ -70,7 +73,8 @@ jobs:
       - name: Get allure results artifacts
         uses: actions/download-artifact@v3
         with:
-          name: allure-results
+          name: newman_artifact
+#          name: allure-results
 
   stop_containers_on_VM:
     runs-on: ubuntu-latest
