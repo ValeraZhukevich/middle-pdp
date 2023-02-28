@@ -55,7 +55,7 @@ jobs:
           npm install -g newman-reporter-htmlextra
       - name: Run postman collection
         run:  |
-          newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export build/allure-results/newman/report.html
+          newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export build/allure-results/newman_report.html
 
       - name: Upload artifacts
         if: always()
