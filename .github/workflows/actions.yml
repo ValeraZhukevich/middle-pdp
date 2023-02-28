@@ -45,21 +45,21 @@ jobs:
           java-version: 11
       - name: Checkout project sources
         uses: actions/checkout@v3
-      - name: Gradle
-        uses: gradle/gradle-build-action@v2
-      - name: Execute ${{ github.event.inputs.test_job }} task
-        run: ./gradlew clean ${{ github.event.inputs.test_job }} -Dbrowser=chrome
-      - name: Upload artifacts
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: allure-results
-          path: build/allure-results
+#      - name: Gradle
+#        uses: gradle/gradle-build-action@v2
+#      - name: Execute ${{ github.event.inputs.test_job }} task
+#        run: ./gradlew clean ${{ github.event.inputs.test_job }} -Dbrowser=chrome
+#      - name: Upload artifacts
+#        if: always()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: allure-results
+#          path: build/allure-results
 
       - name: Run Postman API Tests via Newman
         if: ${{ always() && (github.event.inputs.test_job == 'all' || github.event.inputs.test_job == 'newman') }}
         id: run-newman
-        uses: anthonyvscode/newman-action@v1
+        uses: anthonyvscode/newman-action@v1.0.4
         with:
           collection: zags.postman_collection.json
           reporters: cli
