@@ -49,20 +49,20 @@ jobs:
 #        uses: gradle/gradle-build-action@v2
 #      - name: Execute ${{ github.event.inputs.test_job }} task
 #        run: ./gradlew clean ${{ github.event.inputs.test_job }} -Dbrowser=chrome
-#      - name: Upload artifacts
-#        if: always()
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: allure-results
-#          path: build/allure-results
       - name: Install Newman
         run: |
           npm install -g newman
           npm install -g newman-reporter-htmlextra
       - name: Run postman collection
         run:  |
-          newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export newman_artifact/report.html
+          newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export build/allure-results/newman/report.html
 
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact
+          path: build/allure-results/
 
   artifact:
     needs: tests
@@ -72,7 +72,7 @@ jobs:
       - name: Get allure results artifacts
         uses: actions/download-artifact@v3
         with:
-          name: newman_artifact
+          name: artifact
 #          name: allure-results
 
   stop_containers_on_VM:
