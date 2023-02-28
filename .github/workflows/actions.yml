@@ -59,7 +59,7 @@ jobs:
       - name: Run Postman API Tests via Newman
         if: ${{ always() && (github.event.inputs.test_job == 'all' || github.event.inputs.test_job == 'newman') }}
         id: run-newman
-        uses: anthonyvscode/newman-action@v1.0.4
+        uses: anthonyvscode/newman-action@v1
         with:
           collection: zags.postman_collection.json
           reporters: cli
