@@ -60,7 +60,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: matt-ball/newman-action@master
         with:
-          collection: zags.postman_collection.json
+           collection: zags.postman_collection.json
 
   artifact:
     needs: tests
