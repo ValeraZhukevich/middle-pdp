@@ -55,12 +55,14 @@ jobs:
         with:
           name: allure-results
           path: build/allure-results
-      - name: Run postman collections tests via Newman
-        if: ${{ always() && (github.event.inputs.test_job == 'all' || github.event.inputs.test_job == 'newman') }}
-      - uses: actions/checkout@master
-      - uses: matt-ball/newman-action@master
+      - name: Run Postman API Tests via Newman
+        id: run-newman
+        uses: anthonyvscode/newman-action@v1
         with:
-           collection: zags.postman_collection.json
+          collection: zags.postman_collection.json
+          reporters: cli
+      - name: Output summary to console
+        run: echo ${{ steps.run-newman.outputs.summary }}
 
   artifact:
     needs: tests
