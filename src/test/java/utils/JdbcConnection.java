@@ -23,10 +23,10 @@ public class JdbcConnection {
     }
 
     public static User getUser(Long id) {
-        try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM users WHERE id = ?");
-            ps.setLong(1, id);
-            ResultSet resultSet = ps.executeQuery();
+        try( PreparedStatement preparedStatement =
+                     connection.prepareStatement("SELECT * FROM users WHERE id = ?");) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             return User.builder()
                     .id(resultSet.getLong("id"))
@@ -43,10 +43,10 @@ public class JdbcConnection {
 
     @Step("Saving '{user}' user")
     public static Long saveUser(User user) {
-        try {
-            PreparedStatement prepareStatement = connection
-                    .prepareStatement("INSERT INTO users (name, surname, email, phone) VALUES(?, ?, ?, ?)",
-                            PreparedStatement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement prepareStatement = connection
+                .prepareStatement("INSERT INTO users (name, surname, email, phone) VALUES(?, ?, ?, ?)",
+                        PreparedStatement.RETURN_GENERATED_KEYS)) {
+
             prepareStatement.setString(1, user.getName());
             prepareStatement.setString(2, user.getSurname());
             prepareStatement.setString(3, user.getEmail());
@@ -64,9 +64,8 @@ public class JdbcConnection {
 
     @Step("Update user '{user}'")
     public static void updateUser(User user) {
-        try {
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("UPDATE users SET name=?, surname=?, email=?, phone=? WHERE id=?");
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement("UPDATE users SET name=?, surname=?, email=?, phone=? WHERE id=?")) {
 
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getSurname());
@@ -81,9 +80,8 @@ public class JdbcConnection {
 
     @Step("Delete user by '{id}' id")
     public static void deleteUser(Long id) {
-        try {
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("DELETE FROM users WHERE id=?");
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement("DELETE FROM users WHERE id=?")) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
 
@@ -94,9 +92,7 @@ public class JdbcConnection {
 
     @Step("Getting number of all users")
     public static int getUsersCount() {
-        Statement statement;
-        try {
-            statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT Count(*) FROM users");
             resultSet.next();
             return resultSet.getInt(1);
