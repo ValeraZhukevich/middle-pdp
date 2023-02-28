@@ -1,0 +1,206 @@
+{
+	"info": {
+		"_postman_id": "f1f8b764-bbd4-4cc5-a48c-c0d673c587e8",
+		"name": "zags",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET APPLICATIONS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/getApplications",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"getApplications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create user for birth registration\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.globals.set(\"applicationId\", jsonData.data.applicationid);\r",
+							"    pm.globals.set(\"applicantId\", jsonData.data.applicationid);\r",
+							"    pm.globals.set(\"citizenId\", jsonData.data.citizenid);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mode\": \"birth\",\r\n\r\n    \"personalFirstName\": \"Marshall\",\r\n    \"personalLastName\": \"Erickson\",\r\n    \"personalMiddleName\": \"Markus\",\r\n    \"personalPhoneNumber\": \"80296894578\",\r\n    \"personalNumberOfPassport\": \"KH4587368\",\r\n\r\n    \"citizenLastName\": \"Erickson\",\r\n    \"citizenFirstName\": \"Marshall\",\r\n    \"citizenMiddleName\": \"Markus\",\r\n    \"citizenBirthDate\": \"3-15-1984\",\r\n    \"citizenNumberOfPassport\": \"KH4587368\",\r\n    \"citizenGender\": \"Male\",\r\n  \r\n    \"anotherPersonLastName\": \"Erickson\",\r\n    \"anotherPersonFirstName\": \"Marvin\",\r\n    \"anotherPersonMiddleName\": \"Marshall\",\r\n    \"birth_of_anotoherPerson\": \"5-5-2016\",\r\n    \"anotherPersonPassport\": \"KH482639\",\r\n    \r\n    \"birth_place\": \"New York\",\r\n    \"birth_mother\": \"Lily Aldrin\",\r\n    \"birth_father\": \"Marshall Erickson\"\r\n  }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/sendUserRequest",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"sendUserRequest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create admin\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.globals.set(\"staffId \", jsonData.data.staffid);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dateofbirth\": \"8-15-1985\",\r\n    \"personalFirstName\": \"Ted\",\r\n    \"personalLastName\": \"Mosby\",\r\n    \"personalMiddleName\": \"Eveline\",\r\n    \"personalNumberOfPassport\": \"KH45869\",\r\n    \"personalPhoneNumber\": \"80296589545\"\r\n  }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/sendAdminRequest",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"sendAdminRequest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "APPROVE APPLICATION",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful approving\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data.kindofapplication).to.eql(\"Получение свидетельства о рождении\")\r",
+							"    pm.expect(jsonData.data.statusofapplication).to.eql(\"approved\")\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"applId\": \"{{applicantId}}\",\r\n    \"staffid\": \"{{staffId}}\",\r\n    \"action\": \"approved\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/requestProcess",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"requestProcess"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "senlatest",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "user",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "https://regoffice.senla.eu"
+		}
+	]
+}
