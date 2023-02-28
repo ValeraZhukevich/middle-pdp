@@ -62,7 +62,6 @@ jobs:
       - name: Run postman collection
         run:  |
           newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export newman_artifact/report.html
-      - name: Run postman collections tests via Newman
 
 
   artifact:
