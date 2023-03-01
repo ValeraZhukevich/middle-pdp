@@ -1,73 +1,91 @@
 package steps;
 
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import config.GuiConfig;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.qameta.allure.Allure;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import pages.SignUpPage;
+
+import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.*;
 
+@ExtendWith(GuiConfig.class)
 public class SpotifyLoginStepsDef {
     private final SignUpPage signUpPage = new SignUpPage();
 
-    @When("I transient on sign up page")
-    public void iTransientOnSignUpPage() {
-        System.out.println("lalala");
-    }
+    @Given("I'm on signup spotify page")
+    public void iMOnSignupSpotifyPage() {
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("browserName", "chrome");
+        //  capabilities.setCapability("browserVersion", "100.0");
+        capabilities.setCapability("selenoid:options", Map.<String, Object>of(
+                "enableVNC", true,
+                "enableVideo", true
+        ));
 
-    @And("And fill email field as {string}")
-    public void andFillEmailFieldAs(String email) {
-        signUpPage.fillEmailInput(email);
-    }
+        Configuration.browserCapabilities = capabilities;
+        Configuration.remote = "http://34.65.55.99:4444/wd/hub";
 
-    @And("And fill confirm email field as {string}")
-    public void andFillConfirmEmailFieldAs(String confirmEmail) {
-        signUpPage.fillConfirmEmailInput(confirmEmail);
-    }
-
-    @And("And fill password field as as {string}")
-    public void andFillPasswordFieldAsAs(String password) {
-        signUpPage.fillPasswordInput(password);
-    }
-
-    @And("And fill display field as {string}")
-    public void andFillDisplayFieldAs(String displayName) {
-        signUpPage.fillDisplayNameInput(displayName);
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
+                .screenshots(true)
+                .savePageSource(true));
+        open("http://spotify.com/signup");
     }
 
 
-    @And("And fill month field as {string}")
-    public void andFillMonthFieldAs(String month) {
-        signUpPage.fillMonthInput(month);
+    @When("I type {string} in email input")
+    public void iTypeInEmailInput(String email) {
+        signUpPage.typeEmail(email);
     }
 
-    @And("And fill year field as {int}")
-    public void andFillYearFieldAs(int year) {
-        Allure.attachment("log", "And so on");
-        signUpPage.fillYearInput(year);
+    @And("And type {string} in confirm email input")
+    public void andTypeInConfirmEmailInput(String email) {
+        signUpPage.typeConfirmEmail(email);
     }
 
-    @And("And fill gender as {string}")
-    public void andFillGenderAs(String gender) {
-        $("#wtf").click();
-        signUpPage.selectGender(gender);
+    @And("And type {string} in password input")
+    public void andTypeInPasswordInput(String password) {
+        signUpPage.typePassword(password);
+    }
+
+    @And("And type {string} in nickname input")
+    public void andTypeInNicknameInput(String nickname) {
+        signUpPage.typeNickname(nickname);
+    }
+
+    @And("And type {int} in day of birthday")
+    public void andTypeDayInDayOfBirthday(int day) {
+        signUpPage.typeDay(day);
+    }
+
+    @And("And choose {string} as a month of birthday")
+    public void andChooseAsAMonthOfBirthday(String month) {
+        signUpPage.chooseMonth(month);
+    }
+
+    @And("And accept all conditions")
+    public void andAcceptAllConditions() {
+        signUpPage.acceptAllConditions();
     }
 
     @Then("everything will be ok")
     public void everythingWillBeOk() {
     }
 
-    @And("And fill day field as {int}")
-    public void andFillDayFieldAsDay(int day) {
-        signUpPage.fillDayInput(day);
+    @And("And type {int} in year of birthday")
+    public void andTypeYearInYearOfBirthday(int year) {
+        signUpPage.typeYear(year);
     }
 
-    @Given("I'm on spotify page")
-    public void iMOnSpotifyPage() {
-        open("https://www.spotify.com");
-        sleep(500);
-        signUpPage.closeCookieFrameIfExist();
+    @And("And choose {string} as gender")
+    public void andChooseAsGender(String gender) {
+        signUpPage.selectGender(gender);
     }
 }

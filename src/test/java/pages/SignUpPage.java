@@ -15,44 +15,46 @@ public class SignUpPage {
     private final SelenideElement dayInput = $("#day");
     private final SelenideElement monthInput = $("#month");
     private final SelenideElement yearInput = $("#year");
-    private final SelenideElement maleOption = $(byText("Male"));
-    private final SelenideElement femaleOption = $(byText("Female"));
-    private final SelenideElement nonbinaryOption = $(byText("Non-binary"));
+    private final SelenideElement maleOption = $("#gender_option_male");
+
+    private final SelenideElement acceptConditions = $("#third-party-checkbox");
+    private final SelenideElement femaleOption = $("#gender_option_female");
+    private final SelenideElement otherOption = $("#gender_option_other");
     private final SelenideElement captcha = $(".recaptcha-checkbox-border");
     private final SelenideElement closeCookieFrameButton =
-            $("#onetrust-close-btn-container .onetrust-close-btn-handler");
+            $("#onetrust-close-btn-container");
 
-    public SignUpPage fillEmailInput(String email) {
+    public SignUpPage typeEmail(String email) {
         emailInput.val(email);
         return this;
     }
 
-    public SignUpPage fillConfirmEmailInput(String email) {
+    public SignUpPage typeConfirmEmail(String email) {
         confirmEmailInput.val(email);
         return this;
     }
 
-    public SignUpPage fillPasswordInput(String password) {
+    public SignUpPage typePassword(String password) {
         passwordInput.val(password);
         return this;
     }
 
-    public SignUpPage fillDisplayNameInput(String displayName) {
+    public SignUpPage typeNickname(String displayName) {
         displayNameInput.val(displayName);
         return this;
     }
 
-    public SignUpPage fillDayInput(int day) {
+    public SignUpPage typeDay(int day) {
         dayInput.val(String.valueOf(day));
         return this;
     }
 
-    public SignUpPage fillMonthInput(String month) {
+    public SignUpPage chooseMonth(String month) {
         monthInput.selectOption(month);
         return this;
     }
 
-    public SignUpPage fillYearInput(int year) {
+    public SignUpPage typeYear(int year) {
         yearInput.val(String.valueOf(year));
         return this;
     }
@@ -67,9 +69,8 @@ public class SignUpPage {
         return this;
     }
 
-    public SignUpPage selectNonBinaryOption() {
-        nonbinaryOption.click();
-        return this;
+    public void acceptAllConditions(){
+        acceptConditions.click();
     }
 
     public SignUpPage confirmCaptcha() {
@@ -89,14 +90,18 @@ public class SignUpPage {
             case "Female":
                 selectFemaleOption();
                 break;
-            case "Nonbinary":
-                selectNonBinaryOption();
+            case "Other":
+                selectOtherGender();
                 break;
             case "Male":
             default:
                 selectMaleOption();
         }
         return this;
+    }
+
+    private void selectOtherGender() {
+        otherOption.click();
     }
 
 

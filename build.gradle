@@ -28,8 +28,11 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'org.postgresql:postgresql:42.5.4'
     implementation 'com.github.javafaker:javafaker:1.0.2'
-    implementation 'io.cucumber:cucumber-java:7.11.1'
-    implementation 'io.cucumber:cucumber-junit:7.11.1'
+
+    implementation 'io.cucumber:cucumber-java:6.11.0'
+    implementation 'io.cucumber:cucumber-junit:6.11.0'
+    implementation 'io.qameta.allure:allure-cucumber6-jvm:2.21.0'
+    testImplementation 'org.aspectj:aspectjweaver:1.9.7'
 
 
 }
@@ -38,20 +41,20 @@ test {
     useJUnitPlatform()
 }
 
-tasks.register('gui', Test) {
-    useJUnitPlatform {
-        includeTags "gui"
+task gui(type: Test){
+    useJUnitPlatform(){
+        includeTags("gui")
     }
-    maxParallelForks(2)
+    maxParallelForks(4)
 }
 
-
-tasks.register('allure', Test) {
-    useJUnitPlatform {
-        includeTags "allure"
+task jdbc(type: Test){
+    useJUnitPlatform(){
+        includeTags("jdbc")
     }
 }
 
-tasks.register('cucumber', Test) {
+task cucumber(type: Test){
     systemProperty "cucumber.filter.tags", "@cucumber"
 }
+
