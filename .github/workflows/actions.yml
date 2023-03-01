@@ -12,6 +12,7 @@ on:
           - gui
           - jdbc
           - newman
+          - 🥒
           - all
       allure:
         description: "Generate allure reports"
