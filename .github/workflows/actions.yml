@@ -29,7 +29,8 @@ jobs:
       - name: ssh connection and start docker containers
         run:  |
           ssh valera@${{ secrets.HOST_IP }} "./cm selenoid start & docker start pdp-postgres"
-          ssh valera@${{ secrets.HOST_IP }} "docker stop newman-report & docker rm newman-report"
+          ssh valera@${{ secrets.HOST_IP }} "docker stop newman-report"
+          ssh valera@${{ secrets.HOST_IP }} "docker rm newman-report"
           ssh valera@${{ secrets.HOST_IP }} "docker image rm html"
 
 #  tests:
