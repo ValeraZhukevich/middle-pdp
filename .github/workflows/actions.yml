@@ -93,7 +93,7 @@ jobs:
 #    needs: artifact
     if: ${{ always() && (github.event.inputs.allure == 'true') }}
     steps:
-      - name: Get artifact id
+#      - name: Get artifact id
 #        run: |
 #          ID=$(curl \
 #                -H "Accept:application/vnd.github+json" \
