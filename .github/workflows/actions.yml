@@ -121,5 +121,5 @@ jobs:
       - name: Run service for NEWMAN report
         if: ${{ github.event.inputs.test_job }} == 'newman' || ${{ github.event.inputs.test_job }} == 'all'
         run: |
-          ssh valera@${{ secrets.HOST_IP }} "docker build -t html ."
+          ssh valera@${{ secrets.HOST_IP }} "docker build -t html newman"
           ssh valera@${{ secrets.HOST_IP }} "docker run --name newman-report -p 8082:80 -d html"
