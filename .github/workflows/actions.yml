@@ -112,8 +112,9 @@ jobs:
       - name: Clear results folder
         run: ssh valera@${{ secrets.HOST_IP }} "rm -rf allure-results/**"
       - name: Unzip into results folder
-        run: ssh valera@${{ secrets.HOST_IP }} 
-          "unzip artifacts.zip -d allure-results & mv -i allure-results/newman_report.html newman/index.html"
+        run: |
+          ssh valera@${{ secrets.HOST_IP }} "unzip artifacts.zip -d allure-results"
+          ssh valera@${{ secrets.HOST_IP }} "mv -i allure-results/newman_report.html newman/index.html"
       - name: Generate Allure report
         run: curl http://${{ secrets.HOST_IP }}:5050/generate-report
 
