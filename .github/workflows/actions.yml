@@ -27,10 +27,11 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_HOST }}
       - name: ssh connection and start docker containers
-        run:  |
-          ssh valera@${{ secrets.HOST_IP }} "./cm selenoid start & docker start pdp-postgres"
-          ssh valera@${{ secrets.HOST_IP }} "docker stop newman-report & docker rm newman-report"
-          ssh valera@${{ secrets.HOST_IP }} "docker image rm html"
+        run:  ssh valera@${{ secrets.HOST_IP }} "./cm selenoid start & docker start pdp-postgres"
+      - name: Stop Newman report docker container
+        run:  ssh valera@${{ secrets.HOST_IP }} "docker stop newman-report"
+      - name: Remove docker container and image of NGINX server
+        run:  ssh valera@${{ secrets.HOST_IP }} "docker image rm html & docker rm newman-report"
 
 #  tests:
     #    strategy:
