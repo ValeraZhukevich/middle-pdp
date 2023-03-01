@@ -107,7 +107,9 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_HOST }}
       - name: 1 command
-        run: ssh valera@${{ secrets.HOST_IP }} "cd newman & docker build -t html . & docker run --name newman-report -p 8082:80 -d html"
+        run: ssh valera@${{ secrets.HOST_IP }} "docker build -t html newman"
+      - name: 2 command
+        run: ssh valera@${{ secrets.HOST_IP }} "docker run --name newman-report -p 8082:80 -d html"
 #      - name: Download artifact
 #        run: ssh valera@${{ secrets.HOST_IP }} "curl -H \"Accept:application/vnd.github+json\" -H \"Authorization:Bearer ${{ secrets.TOKEN }}\" -H \"X-GitHub-Api-Version:2022-11-28\" -L -o artifacts.zip https://api.github.com/repos/${{ secrets.OWNER }}/${{ secrets.PROJECT }}/actions/artifacts/${{ env.id }}/zip"
 #      - name: Clear results folder
