@@ -19,18 +19,18 @@ on:
         required: true
         type: boolean
 jobs:
-#  run_containers_on_VM:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.PRIVATE_KEY }}
-#          known_hosts: ${{ secrets.SSH_HOST }}
-#      - name: ssh connection and start docker containers
-#        run: ssh valera@${{ secrets.HOST_IP }}
-#          "./cm selenoid start &
-#          docker start pdp-postgres &
-#          exit"
+  run_containers_on_VM:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_HOST }}
+      - name: ssh connection and start docker containers
+        run:  |
+          ssh valera@${{ secrets.HOST_IP }} "./cm selenoid start & docker start pdp-postgres"
+          ssh valera@${{ secrets.HOST_IP }} "docker stop newman-report & docker rm newman-report"
+          ssh valera@${{ secrets.HOST_IP }} "docker image rm html"
 
 #  tests:
     #    strategy:
@@ -93,33 +93,31 @@ jobs:
 #    needs: artifact
     if: ${{ always() && (github.event.inputs.allure == 'true') }}
     steps:
-#      - name: Get artifact id
-#        run: |
-#          ID=$(curl \
-#                -H "Accept:application/vnd.github+json" \
-#                -H "Authorization:Bearer ${{ secrets.TOKEN }}" \
-#                -H "X-GitHub-Api-Version:2022-11-28" \
-#                https://api.github.com/repos/${{ secrets.OWNER }}/${{ secrets.PROJECT }}/actions/artifacts | jq -r '.artifacts[0].id')
-#          echo "id=$ID" >> $GITHUB_ENV
-#          echo $ID
+      - name: Get artifact id
+        run: |
+          ID=$(curl \
+                -H "Accept:application/vnd.github+json" \
+                -H "Authorization:Bearer ${{ secrets.TOKEN }}" \
+                -H "X-GitHub-Api-Version:2022-11-28" \
+                https://api.github.com/repos/${{ secrets.OWNER }}/${{ secrets.PROJECT }}/actions/artifacts | jq -r '.artifacts[0].id')
+          echo "id=$ID" >> $GITHUB_ENV
+          echo $ID
       - uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_HOST }}
-      - name: 1 command
-        run: ssh valera@${{ secrets.HOST_IP }} "docker build -t html newman"
-      - name: 2 command
-        run: ssh valera@${{ secrets.HOST_IP }} "docker run --name newman-report -p 8082:80 -d html"
-#      - name: Download artifact
-#        run: ssh valera@${{ secrets.HOST_IP }} "curl -H \"Accept:application/vnd.github+json\" -H \"Authorization:Bearer ${{ secrets.TOKEN }}\" -H \"X-GitHub-Api-Version:2022-11-28\" -L -o artifacts.zip https://api.github.com/repos/${{ secrets.OWNER }}/${{ secrets.PROJECT }}/actions/artifacts/${{ env.id }}/zip"
-#      - name: Clear results folder
-#        run: ssh valera@${{ secrets.HOST_IP }} "rm -rf allure-results/**"
-#      - name: Unzip into results folder
-#        run: ssh valera@${{ secrets.HOST_IP }} "unzip artifacts.zip -d allure-results"
+      - name: Download artifact
+        run: ssh valera@${{ secrets.HOST_IP }} "curl -H \"Accept:application/vnd.github+json\" -H \"Authorization:Bearer ${{ secrets.TOKEN }}\" -H \"X-GitHub-Api-Version:2022-11-28\" -L -o artifacts.zip https://api.github.com/repos/${{ secrets.OWNER }}/${{ secrets.PROJECT }}/actions/artifacts/${{ env.id }}/zip"
+      - name: Clear results folder
+        run: ssh valera@${{ secrets.HOST_IP }} "rm -rf allure-results/**"
+      - name: Unzip into results folder
+        run: ssh valera@${{ secrets.HOST_IP }} 
+          "unzip artifacts.zip -d allure-results & mv -i allure-results/newman_report.html newman/index.html"
+      - name: Generate Allure report
+        run: curl http://${{ secrets.HOST_IP }}:5050/generate-report
 
-#      - name: Store newman htm report file
-#        if: ${{ github.event.inputs.test_job }} == 'newman' || ${{ github.event.inputs.test_job }} == 'all'
-#        run: |
-#          mv -i allure-results/newman_report.html.html ~/newman
-#      - name: Generate Allure report
-#        run: curl http://${{ secrets.HOST_IP }}:5050/generate-report
+      - name: Run service for NEWMAN report
+        if: ${{ github.event.inputs.test_job }} == 'newman' || ${{ github.event.inputs.test_job }} == 'all'
+        run: |
+          ssh valera@${{ secrets.HOST_IP }} "docker build -t html ."
+          ssh valera@${{ secrets.HOST_IP }} "docker run --name newman-report -p 8082:80 -d html"

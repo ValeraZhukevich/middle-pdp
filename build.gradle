@@ -28,6 +28,8 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'org.postgresql:postgresql:42.5.4'
     implementation 'com.github.javafaker:javafaker:1.0.2'
+    implementation 'io.cucumber:cucumber-java:7.11.1'
+    implementation 'io.cucumber:cucumber-junit:7.11.1'
 
 
 }
@@ -48,4 +50,8 @@ tasks.register('allure', Test) {
     useJUnitPlatform {
         includeTags "allure"
     }
+}
+
+tasks.register('cucumber', Test) {
+    systemProperty "cucumber.filter.tags", "@cucumber"
 }
