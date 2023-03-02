@@ -56,5 +56,13 @@ task jdbc(type: Test){
 
 task cucumber(type: Test){
     systemProperty "cucumber.filter.tags", "@cucumber"
+    maxParallelForks(4)
+}
+
+task all(type: Test) {
+    dependsOn 'jdbc'
+    dependsOn 'gui'
+    dependsOn 'cucumber'
+    maxParallelForks(4)
 }
 

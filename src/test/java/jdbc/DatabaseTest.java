@@ -1,16 +1,16 @@
 package jdbc;
 
 import com.github.javafaker.Faker;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import io.qameta.allure.Feature;
+import org.junit.jupiter.api.*;
 import utils.JdbcConnection;
 import utils.PropertiesReader;
 import utils.User;
 
 import static utils.PropertiesReader.getProperty;
 
+@Tag("jdbc")
+@Feature("JDBC Postgres database")
 public class DatabaseTest {
 
     @Test
@@ -35,7 +35,7 @@ public class DatabaseTest {
     }
 
     @AfterAll
-    public void closeConnections() {
+    public static void closeConnections() {
         JdbcConnection.closeConnection();
     }
 }

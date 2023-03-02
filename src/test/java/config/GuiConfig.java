@@ -21,6 +21,7 @@ public class GuiConfig implements BeforeAllCallback {
         ));
 
         Configuration.browserCapabilities = capabilities;
+        Configuration.timeout = 10000;
         Configuration.remote = "http://34.65.55.99:4444/wd/hub";
 
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()

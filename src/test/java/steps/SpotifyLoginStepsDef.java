@@ -3,6 +3,7 @@ package steps;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import config.GuiConfig;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -20,8 +21,8 @@ import static com.codeborne.selenide.Selenide.*;
 public class SpotifyLoginStepsDef {
     private final SignUpPage signUpPage = new SignUpPage();
 
-    @Given("I'm on signup spotify page")
-    public void iMOnSignupSpotifyPage() {
+    @Before
+    public static void init(){
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("browserName", "chrome");
         //  capabilities.setCapability("browserVersion", "100.0");
@@ -36,7 +37,13 @@ public class SpotifyLoginStepsDef {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
                 .screenshots(true)
                 .savePageSource(true));
+    }
+
+    @Given("I'm on signup spotify page")
+    public void iMOnSignupSpotifyPage() {
         open("http://spotify.com/signup");
+        sleep(1000);
+        signUpPage.closeCookieFrameIfExist();
     }
 
 

@@ -15,14 +15,13 @@ public class SignUpPage {
     private final SelenideElement dayInput = $("#day");
     private final SelenideElement monthInput = $("#month");
     private final SelenideElement yearInput = $("#year");
-    private final SelenideElement maleOption = $("#gender_option_male");
+    private final SelenideElement maleOption = $(byText("Male"));
 
     private final SelenideElement acceptConditions = $("#third-party-checkbox");
-    private final SelenideElement femaleOption = $("#gender_option_female");
-    private final SelenideElement otherOption = $("#gender_option_other");
+    private final SelenideElement femaleOption = $(byText("Female"));
+    private final SelenideElement otherOption = $(byText("Other"));
     private final SelenideElement captcha = $(".recaptcha-checkbox-border");
-    private final SelenideElement closeCookieFrameButton =
-            $("#onetrust-close-btn-container");
+    private final SelenideElement closeCookieFrameButton = $("#onetrust-close-btn-container");
 
     public SignUpPage typeEmail(String email) {
         emailInput.val(email);
