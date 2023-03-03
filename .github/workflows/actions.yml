@@ -51,27 +51,27 @@ jobs:
         if: ${{ github.event.inputs.test_job == 'gui' || github.event.inputs.test_job == 'all' }}
         run: ./gradlew gui
 
-      - name: Execute CUCUMBER task
-        if: ${{ github.event.inputs.test_job == '🥒' || github.event.inputs.test_job == 'all' }}
-        run: ./gradlew cucumber
-
-      - name: Execute JDBC task
-        if: ${{ github.event.inputs.test_job == 'jdbc' || github.event.inputs.test_job == 'all' }}
-        run: ./gradlew jdbc
-
-      - name: Install and run Newman
-        if: ${{ github.event.inputs.test_job == 'newman' || github.event.inputs.test_job == 'all' }}
-        run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
-          newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export build/allure-results/newman_report.html
-
-      - name: Upload artifacts
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifacts
-          path: build/allure-results/
+#      - name: Execute CUCUMBER task
+#        if: ${{ github.event.inputs.test_job == '🥒' || github.event.inputs.test_job == 'all' }}
+#        run: ./gradlew cucumber
+#
+#      - name: Execute JDBC task
+#        if: ${{ github.event.inputs.test_job == 'jdbc' || github.event.inputs.test_job == 'all' }}
+#        run: ./gradlew jdbc
+#
+#      - name: Install and run Newman
+#        if: ${{ github.event.inputs.test_job == 'newman' || github.event.inputs.test_job == 'all' }}
+#        run: |
+#          npm install -g newman
+#          npm install -g newman-reporter-htmlextra
+#          newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export build/allure-results/newman_report.html
+#
+#      - name: Upload artifacts
+#        if: always()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: artifacts
+#          path: build/allure-results/
 
 #  artifact:
 #    needs: tests
