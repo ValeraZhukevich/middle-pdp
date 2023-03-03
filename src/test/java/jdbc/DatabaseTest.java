@@ -5,7 +5,7 @@ import io.qameta.allure.Feature;
 import org.junit.jupiter.api.*;
 import utils.JdbcConnection;
 import utils.PropertiesReader;
-import utils.User;
+import pojo.User;
 
 import static utils.PropertiesReader.getProperty;
 

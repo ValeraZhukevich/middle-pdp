@@ -1,7 +1,7 @@
 package utils;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.support.ui.Select;
+import pojo.User;
 
 import java.sql.*;
 
