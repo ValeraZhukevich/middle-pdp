@@ -112,12 +112,11 @@ jobs:
           echo "id=$ID" >> $GITHUB_ENV
           echo $ID
 
+      - name: Download artifact
       - uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_HOST }}
-
-      - name: Download artifact
         run: |
           ssh valera@${{ secrets.HOST_IP }} "curl -H \"Accept:application/vnd.github+json\" -H \"Authorization:Bearer ${{ secrets.TOKEN }}\" -H \"X-GitHub-Api-Version:2022-11-28\" -L -o artifacts.zip https://api.github.com/repos/${{ secrets.OWNER }}/${{ secrets.PROJECT }}/actions/artifacts/${{ env.id }}/zip"
           ssh valera@${{ secrets.HOST_IP }} "rm -rf allure-results/**"
