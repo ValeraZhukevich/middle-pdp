@@ -45,7 +45,7 @@ task gui(type: Test){
     useJUnitPlatform(){
         includeTags("gui")
     }
-    maxParallelForks(4)
+    maxParallelForks(2)
 }
 
 task jdbc(type: Test){
@@ -56,13 +56,7 @@ task jdbc(type: Test){
 
 task cucumber(type: Test){
     systemProperty "cucumber.filter.tags", "@cucumber"
-    maxParallelForks(4)
+    maxParallelForks(2)
 }
 
-task all(type: Test) {
-    dependsOn 'jdbc'
-    dependsOn 'gui'
-    dependsOn 'cucumber'
-    maxParallelForks(4)
-}
 
