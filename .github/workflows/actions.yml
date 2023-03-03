@@ -29,18 +29,6 @@ jobs:
       - name: ssh connection and start docker containers
         run:  ssh valera@${{ secrets.HOST_IP }} "./cm selenoid start & docker start pdp-postgres"
 
-  stop_newman_server:
-    if: ${{ github.event.inputs.newman == 'true' || github.event.inputs.newman == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.PRIVATE_KEY }}
-          known_hosts: ${{ secrets.SSH_HOST }}
-      - name: Stop Newman report docker container
-        run: ssh valera@${{ secrets.HOST_IP }} "docker stop newman-report"
-      - name: Remove docker container and image of NGINX server
-        run: ssh valera@${{ secrets.HOST_IP }} "docker image rm html & docker rm newman-report"
 
   tests:
     runs-on: ubuntu-latest
@@ -148,12 +136,10 @@ jobs:
           ssh valera@${{ secrets.HOST_IP }} "rm -rf allure-results/**"
           ssh valera@${{ secrets.HOST_IP }} "unzip artifacts.zip -d allure-results"
 
-      - name: Run NEWMAN REPORT server
+      - name: Update newman html file
         if: ${{ github.event.inputs.test_job == 'newman' || github.event.inputs.test_job == 'all' }}
         run: |
           ssh valera@${{ secrets.HOST_IP }} "mv -i allure-results/newman_report.html newman/index.html"
-          ssh valera@${{ secrets.HOST_IP }} "docker build -t html newman"
-          ssh valera@${{ secrets.HOST_IP }} "docker run --name newman-report -p 8082:80 -d html"
 
       - name: Generate Allure report
         run: curl http://${{ secrets.HOST_IP }}:5050/generate-report
