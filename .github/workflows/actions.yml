@@ -48,7 +48,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Execute GUI task
-        if: ${{ github.event.inputs.test_job == 'gui' || github.event.inputs.test_job == 'all' }}
+#        if: ${{ github.event.inputs.test_job == 'gui' || github.event.inputs.test_job == 'all' }}
         run: ./gradlew gui
 
 #      - name: Execute CUCUMBER task
