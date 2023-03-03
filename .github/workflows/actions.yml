@@ -43,23 +43,6 @@ jobs:
 
       - name: Checkout project sources
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-
-      - name: Cache NPM dependencies
-        uses: actions/cache@v3
-        id: cache-primes
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-
-      - name: Install dependencies
-        if: steps.cache-primes.outputs.cache-hit != 'true'
-        run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
 
       - name: Gradle
         uses: gradle/gradle-build-action@v2
@@ -78,7 +61,10 @@ jobs:
 
       - name: Install and run Newman
         if: ${{ github.event.inputs.test_job == 'newman' || github.event.inputs.test_job == 'all' }}
-        run: newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export build/allure-results/newman_report.html
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+          newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export build/allure-results/newman_report.html
 
       - name: Upload artifacts
         if: always()
