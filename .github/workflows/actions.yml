@@ -27,7 +27,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_HOST }}
       - name: ssh connection and start docker containers
-        run:  ssh valera@${{ secrets.HOST_IP }} "./cm selenoid start & docker start pdp-postgres"
+        run:  ssh valera@${{ secrets.HOST_IP }} "./cm selenoid start & docker start postgres"
 
 
   tests:
@@ -43,6 +43,23 @@ jobs:
 
       - name: Checkout project sources
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Cache NPM dependencies
+        uses: actions/cache@v3
+        id: cache-primes
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-primes.outputs.cache-hit != 'true'
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
 
       - name: Gradle
         uses: gradle/gradle-build-action@v2
@@ -61,10 +78,7 @@ jobs:
 
       - name: Install and run Newman
         if: ${{ github.event.inputs.test_job == 'newman' || github.event.inputs.test_job == 'all' }}
-        run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
-          newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export build/allure-results/newman_report.html
+        run: newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export build/allure-results/newman_report.html
 
       - name: Upload artifacts
         if: always()
@@ -92,9 +106,10 @@ jobs:
         with:
           key: ${{ secrets.PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_HOST }}
+
       - name: ssh connection and stop docker containers
         run: ssh valera@${{ secrets.HOST_IP }} "./cm selenoid stop &
-          docker stop pdp-postgres"
+          docker stop postgres"
 
   generate_reports:
     runs-on: ubuntu-latest
@@ -115,6 +130,7 @@ jobs:
         with:
           key: ${{ secrets.PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_HOST }}
+
       - name: Download artifact
         run: |
           ssh valera@${{ secrets.HOST_IP }} "curl -H \"Accept:application/vnd.github+json\" -H \"Authorization:Bearer ${{ secrets.TOKEN }}\" -H \"X-GitHub-Api-Version:2022-11-28\" -L -o artifacts.zip https://api.github.com/repos/${{ secrets.OWNER }}/${{ secrets.PROJECT }}/actions/artifacts/${{ env.id }}/zip"
