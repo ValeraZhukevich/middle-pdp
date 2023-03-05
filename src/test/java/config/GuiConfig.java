@@ -9,12 +9,13 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.Map;
 
+import static utils.PropertiesReader.getProperty;
+
 public class GuiConfig implements BeforeAllCallback {
     @Override
     public void beforeAll(ExtensionContext context) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("browserName", "chrome");
-        //  capabilities.setCapability("browserVersion", "100.0");
         capabilities.setCapability("selenoid:options", Map.<String, Object>of(
                 "enableVNC", true,
                 "enableVideo", true
@@ -22,7 +23,7 @@ public class GuiConfig implements BeforeAllCallback {
 
         Configuration.browserCapabilities = capabilities;
         Configuration.timeout = 10000;
-        Configuration.remote = "http://34.65.55.99:4444/wd/hub";
+        Configuration.remote = getProperty("host") + getProperty("selenoidPort");
 
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
                 .screenshots(true)
