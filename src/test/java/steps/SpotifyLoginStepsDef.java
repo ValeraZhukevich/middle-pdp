@@ -16,6 +16,7 @@ import pages.SignUpPage;
 import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.*;
+import static utils.PropertiesReader.getProperty;
 
 @ExtendWith(GuiConfig.class)
 public class SpotifyLoginStepsDef {
@@ -32,7 +33,7 @@ public class SpotifyLoginStepsDef {
         ));
 
         Configuration.browserCapabilities = capabilities;
-        Configuration.remote = "http://34.65.55.99:4444/wd/hub";
+        Configuration.remote = getProperty("host") + getProperty("selenoidPort");;
 
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
                 .screenshots(true)

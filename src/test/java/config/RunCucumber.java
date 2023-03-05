@@ -1,13 +1,8 @@
 package config;
 
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.logevents.SelenideLogger;
-import io.cucumber.java.Before;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
-import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.Map;
 

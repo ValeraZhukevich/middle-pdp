@@ -27,7 +27,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_HOST }}
       - name: ssh connection and start docker containers
-        run:  ssh valera@${{ secrets.HOST_IP }} "./cm selenoid start & docker start postgres"
+        run:  ssh valera@${{ secrets.HOST_IP }} "/home/paramone_val/cm selenoid start & /home/paramone_val/cm selenoid-ui start & docker start postgres"
 
 
   tests:
@@ -93,7 +93,8 @@ jobs:
           known_hosts: ${{ secrets.SSH_HOST }}
 
       - name: ssh connection and stop docker containers
-        run: ssh valera@${{ secrets.HOST_IP }} "./cm selenoid stop &
+        run: ssh valera@${{ secrets.HOST_IP }} "/home/paramone_val/cm selenoid stop &
+          /home/paramone_val/cm selenoid-ui stop &
           docker stop postgres"
 
   generate_reports:
