@@ -39,13 +39,14 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 11
+      - name: Checkout project sources
+        uses: actions/checkout@v3
+
       - name: Cache node
         uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: 'npm'
-      - name: Checkout project sources
-        uses: actions/checkout@v3
 
       - name: Gradle
         uses: gradle/gradle-build-action@v2
