@@ -1,6 +1,7 @@
 package gui;
 
 import config.GuiConfig;
+import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.Tag;
@@ -9,14 +10,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import pages.OnlinerPage;
 
 @ExtendWith(GuiConfig.class)
-@Feature("Onliner")
+@Epic("GUI")
+@Feature("Onliner tests")
 @Tag("gui")
 public class OnlinerTest {
 
     OnlinerPage onlinerPage = new OnlinerPage();
 
     @Test
-    @Story("Search product on onliner.by")
+    @Story("Search LEGO on onliner.by")
     void searchByProductName() {
         onlinerPage.openOnliner();
         onlinerPage.typeInSearchField("Lego");

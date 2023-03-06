@@ -1,7 +1,9 @@
 package jdbc;
 
 import com.github.javafaker.Faker;
+import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.*;
 import utils.JdbcConnection;
 import utils.PropertiesReader;
@@ -10,10 +12,12 @@ import pojo.User;
 import static utils.PropertiesReader.getProperty;
 
 @Tag("jdbc")
+@Epic("JDBC")
 @Feature("JDBC Postgres database")
 public class DatabaseTest {
 
     @Test
+    @Story("Add user to database")
     void addUser(){
         Faker faker = Faker.instance();
         int currentNumber = JdbcConnection.getUsersCount();
