@@ -61,15 +61,10 @@ jobs:
       - name: Install and run Newman
         if: ${{ always() && (github.event.inputs.test_job == 'newman' || github.event.inputs.test_job == 'all') }}
         run: |
-          npm install --prefix ./node -g newman
-          npm install --prefix ./node -g newman-reporter-htmlextra
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
           newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export build/allure-results/newman_report.html
 
-      - name: Save Node packages
-        id: cache-primes-save
-        uses: actions/cache/save@v3
-        with:
-          path: node
 
       - name: Upload artifacts
         if: always()
@@ -127,7 +122,7 @@ jobs:
           ssh valera@${{ secrets.HOST_IP }} "curl -H \"Accept:application/vnd.github+json\" -H \"Authorization:Bearer ${{ secrets.TOKEN }}\" -H \"X-GitHub-Api-Version:2022-11-28\" -L -o artifacts.zip https://api.github.com/repos/${{ secrets.OWNER }}/${{ secrets.PROJECT }}/actions/artifacts/${{ env.id }}/zip"
           ssh valera@${{ secrets.HOST_IP }} "rm -rf allure-results/**"
           ssh valera@${{ secrets.HOST_IP }} "unzip -o artifacts.zip -d allure-results"
-          ssh valera@${{ secrets.HOST_IP }} "mv -i allure-results/newman_report.html newman/index.html"
+          ssh valera@${{ secrets.HOST_IP }} "[ -f old allure-results/newman_report.html ] && mv -i allure-results/newman_report.html newman/index.html"
 
       - name: Generate Allure report
         run: curl http://${{ secrets.HOST_IP }}:5050/generate-report
