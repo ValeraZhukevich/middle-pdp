@@ -19,28 +19,28 @@ on:
         required: true
         type: boolean
 jobs:
-  run_containers_on_VM:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.PRIVATE_KEY }}
-          known_hosts: ${{ secrets.SSH_HOST }}
-      - name: ssh connection and start docker containers
-        run:  ssh valera@${{ secrets.HOST_IP }} "/home/paramone_val/cm selenoid start & docker start postgres"
-
-  tests:
-    runs-on: ubuntu-latest
-    needs: run_containers_on_VM
-    continue-on-error: true
-    steps:
-      - name: Setup java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'adopt'
-          java-version: 11
-      - name: Checkout project sources
-        uses: actions/checkout@v3
+#  run_containers_on_VM:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.PRIVATE_KEY }}
+#          known_hosts: ${{ secrets.SSH_HOST }}
+#      - name: ssh connection and start docker containers
+#        run:  ssh valera@${{ secrets.HOST_IP }} "/home/paramone_val/cm selenoid start & docker start postgres"
+#
+#  tests:
+#    runs-on: ubuntu-latest
+#    needs: run_containers_on_VM
+#    continue-on-error: true
+#    steps:
+#      - name: Setup java
+#        uses: actions/setup-java@v3
+#        with:
+#          distribution: 'adopt'
+#          java-version: 11
+#      - name: Checkout project sources
+#        uses: actions/checkout@v3
 
 #      - name: Cache node
 #        uses: actions/setup-node@v3
@@ -48,63 +48,63 @@ jobs:
 #          node-version: 16
 #          cache: 'npm'
 
-      - name: Gradle
-        uses: gradle/gradle-build-action@v2
-
-      - name: Execute GUI task
-        if: ${{ always() && (github.event.inputs.test_job == 'gui' || github.event.inputs.test_job == 'all') }}
-        run: ./gradlew gui
-
-      - name: Execute CUCUMBER task
-        if: ${{ always() && (github.event.inputs.test_job == '🥒' || github.event.inputs.test_job == 'all') }}
-        run: ./gradlew cucumber
-
-      - name: Execute JDBC task
-        if: ${{ always() && (github.event.inputs.test_job == 'jdbc' || github.event.inputs.test_job == 'all') }}
-        run: ./gradlew jdbc
-
-      - name: Install and run Newman
-        if: ${{ always() && (github.event.inputs.test_job == 'newman' || github.event.inputs.test_job == 'all') }}
-        run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
-          newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export build/allure-results/newman_report.html
-
-
-      - name: Upload artifacts
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifacts
-          path: build/allure-results/
-
-  artifact:
-    needs: tests
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: Get allure results artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: artifacts
-
-  stop_containers_on_VM:
-    runs-on: ubuntu-latest
-    needs: tests
-    if: always()
-    steps:
-      - uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.PRIVATE_KEY }}
-          known_hosts: ${{ secrets.SSH_HOST }}
-
-      - name: ssh connection and stop docker containers
-        run: ssh valera@${{ secrets.HOST_IP }} "/home/paramone_val/cm selenoid stop &
-          docker stop postgres"
+#      - name: Gradle
+#        uses: gradle/gradle-build-action@v2
+#
+#      - name: Execute GUI task
+#        if: ${{ always() && (github.event.inputs.test_job == 'gui' || github.event.inputs.test_job == 'all') }}
+#        run: ./gradlew gui
+#
+#      - name: Execute CUCUMBER task
+#        if: ${{ always() && (github.event.inputs.test_job == '🥒' || github.event.inputs.test_job == 'all') }}
+#        run: ./gradlew cucumber
+#
+#      - name: Execute JDBC task
+#        if: ${{ always() && (github.event.inputs.test_job == 'jdbc' || github.event.inputs.test_job == 'all') }}
+#        run: ./gradlew jdbc
+#
+#      - name: Install and run Newman
+#        if: ${{ always() && (github.event.inputs.test_job == 'newman' || github.event.inputs.test_job == 'all') }}
+#        run: |
+#          npm install -g newman
+#          npm install -g newman-reporter-htmlextra
+#          newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export build/allure-results/newman_report.html
+#
+#
+#      - name: Upload artifacts
+#        if: always()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: artifacts
+#          path: build/allure-results/
+#
+#  artifact:
+#    needs: tests
+#    runs-on: ubuntu-latest
+#    if: always()
+#    steps:
+#      - name: Get allure results artifacts
+#        uses: actions/download-artifact@v3
+#        with:
+#          name: artifacts
+#
+#  stop_containers_on_VM:
+#    runs-on: ubuntu-latest
+#    needs: tests
+#    if: always()
+#    steps:
+#      - uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.PRIVATE_KEY }}
+#          known_hosts: ${{ secrets.SSH_HOST }}
+#
+#      - name: ssh connection and stop docker containers
+#        run: ssh valera@${{ secrets.HOST_IP }} "/home/paramone_val/cm selenoid stop &
+#          docker stop postgres"
 
   generate_reports:
     runs-on: ubuntu-latest
-    needs: artifact
+#    needs: artifact
     continue-on-error: true
     if: ${{ always() && (github.event.inputs.allure == 'true') }}
     steps:
