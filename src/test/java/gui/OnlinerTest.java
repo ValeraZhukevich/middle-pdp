@@ -1,14 +1,14 @@
 package gui;
 
+import config.GuiConfig;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import pages.OnlinerPage;
 
-import static io.qameta.allure.Allure.step;
-
-//@ExtendWith(GuiConfig.class)
+@ExtendWith(GuiConfig.class)
 @Feature("Onliner")
 @Tag("gui")
 public class OnlinerTest {
@@ -22,7 +22,7 @@ public class OnlinerTest {
         onlinerPage.typeInSearchField("Lego");
         onlinerPage.chooseFirstCatgory();
         onlinerPage.chooseStarWars();
-//        onlinerPage.applyFilter();
-
+        onlinerPage.chooseMillenniumFalcon();
+        onlinerPage.productNameShouldHasText("LEGO Star Wars 75192 Сокол Тысячелетия");
     }
 }

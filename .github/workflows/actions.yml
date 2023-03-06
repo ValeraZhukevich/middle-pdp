@@ -27,7 +27,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_HOST }}
       - name: ssh connection and start docker containers
-        run:  ssh valera@${{ secrets.HOST_IP }} "/home/paramone_val/cm selenoid start & /home/paramone_val/cm selenoid-ui start & docker start postgres"
+        run:  ssh valera@${{ secrets.HOST_IP }} "/home/paramone_val/cm selenoid start & docker start postgres"
 
 
   tests:
@@ -61,9 +61,15 @@ jobs:
       - name: Install and run Newman
         if: ${{ always() && (github.event.inputs.test_job == 'newman' || github.event.inputs.test_job == 'all') }}
         run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
+          npm install --prefix ./node -g newman
+          npm install --prefix ./node -g newman-reporter-htmlextra
           newman run "zags.postman_collection.json" -r htmlextra --reporter-htmlextra-export build/allure-results/newman_report.html
+
+      - name: Save Node packages
+        id: cache-primes-save
+        uses: actions/cache/save@v3
+        with:
+          path: node
 
       - name: Upload artifacts
         if: always()
@@ -94,7 +100,6 @@ jobs:
 
       - name: ssh connection and stop docker containers
         run: ssh valera@${{ secrets.HOST_IP }} "/home/paramone_val/cm selenoid stop &
-          /home/paramone_val/cm selenoid-ui stop &
           docker stop postgres"
 
   generate_reports:
@@ -116,15 +121,11 @@ jobs:
         with:
           key: ${{ secrets.PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_HOST }}
-      - name: Download artfifact and unzip
+      - name: Download artifacts and unzip
         run: |
           ssh valera@${{ secrets.HOST_IP }} "curl -H \"Accept:application/vnd.github+json\" -H \"Authorization:Bearer ${{ secrets.TOKEN }}\" -H \"X-GitHub-Api-Version:2022-11-28\" -L -o artifacts.zip https://api.github.com/repos/${{ secrets.OWNER }}/${{ secrets.PROJECT }}/actions/artifacts/${{ env.id }}/zip"
           ssh valera@${{ secrets.HOST_IP }} "rm -rf allure-results/**"
           ssh valera@${{ secrets.HOST_IP }} "unzip artifacts.zip -d allure-results"
-
-      - name: Update newman html file
-        if: ${{ github.event.inputs.test_job == 'newman' || github.event.inputs.test_job == 'all' }}
-        run: |
           ssh valera@${{ secrets.HOST_IP }} "mv -i allure-results/newman_report.html newman/index.html"
 
       - name: Generate Allure report
