@@ -39,6 +39,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 11
+
       - name: Checkout project sources
         uses: actions/checkout@v3
 
