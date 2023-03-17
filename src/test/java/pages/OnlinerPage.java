@@ -7,7 +7,7 @@ import io.qameta.allure.Step;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 
-@Feature("Search on amazon.com")
+@Feature("Search on onliner.by")
 public class OnlinerPage {
     private final SelenideElement searchInput = $(".fast-search__input");
     private final SelenideElement category = $("a.category__title");
@@ -15,7 +15,7 @@ public class OnlinerPage {
     private final SelenideElement millenniumFalcon = $x("//span[contains(text(), 'LEGO Star Wars 75192')]");
     private final SelenideElement productName = $("h1.catalog-masthead__title");
 
-    @Step("Open amazon.com")
+    @Step("Open onliner.by")
     public void openOnliner(){
         open("https://onliner.by");
     }
